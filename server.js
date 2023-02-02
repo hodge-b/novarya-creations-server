@@ -18,7 +18,7 @@ const path = require('path');
 const PORT = process.env.PORT || 3500;
 
 app.use(express.json());
-app.use(cors({origin: ['http://localhost:3000', 'https://www.novaryacreations.ca']}));
+app.use(cors({origin: "*"}));
 // app.use('/', express.static(path.join(__dirname, '/public')));
 
 const mysql = require('mysql');
