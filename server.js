@@ -13,12 +13,15 @@ const credentials = {
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const path = require('path');
 const PORT = process.env.PORT || 3500;
 
+app.use(express.json());
+app.use(cors({origin: ['http://localhost:3000', 'https://www.novaryacreations.ca']}));
 // app.use('/', express.static(path.join(__dirname, '/public')));
 
-const mysql = require('mysql2');
+const mysql = require('mysql');
 const connection = mysql.createPool({
     host: credentials.host,
     user: credentials.user,
@@ -26,12 +29,10 @@ const connection = mysql.createPool({
     database: credentials.database,
 })
 
-
-app.get('/', (req, res) => {
+app.get('/login', (req, res) => {
     connection.query('SELECT * FROM users', (err, result) => {
-        console.log(result)
+        res.send(result);
     });
-    res.send("novarya-creations-server");
 });
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
