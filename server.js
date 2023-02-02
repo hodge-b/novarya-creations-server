@@ -27,4 +27,8 @@ connection.connect(err => {
     console.log('database connected')
 })
 
+app.get('/', (req, res) => {
+    res.send("novarya-creations-server");
+});
+
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
