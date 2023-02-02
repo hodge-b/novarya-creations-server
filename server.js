@@ -6,28 +6,31 @@
 require('dotenv').config();
 const credentials = {
     host: process.env.DB_HOST,
-    user: process.env.DB_USER,
+    user: process.env.DB_USER, 
     pass: process.env.DB_PASS,
     database: process.env.DB_DATABASE,
 }
 
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3001;
+const path = require('path');
+const PORT = process.env.PORT || 3500;
 
-const mysql = require('mysql');
-const connection = mysql.createConnection({
+// app.use('/', express.static(path.join(__dirname, '/public')));
+
+const mysql = require('mysql2');
+const connection = mysql.createPool({
     host: credentials.host,
     user: credentials.user,
     password: credentials.pass,
     database: credentials.database,
 })
-connection.connect(err => {
-    if (err) throw err;
-    console.log('database connected')
-})
+
 
 app.get('/', (req, res) => {
+    connection.query('SELECT * FROM users', (err, result) => {
+        console.log(result)
+    });
     res.send("novarya-creations-server");
 });
 
