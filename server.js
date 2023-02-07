@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
+const multer = require('multer');
 const PORT = process.env.PORT || 3500;
 
 // Connect to MongoDB
@@ -35,18 +36,30 @@ app.use(express.json());
 //middleware for cookies
 app.use(cookieParser());
 
+// middleware for uploading files
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './public/images')
+    },
+    filename: (req, file, callback) => {
+        console.log(file);
+        callback(null, Date.now() + path.extname(file.originalname))
+    }
+});
+const upload = multer({ storage: storage });
+
 //serve static files
 app.use('/', express.static(path.join(__dirname, '/public')));
 
 // routes
 app.use('/', require('./routes/root'));
-// app.use('/register', require('./routes/register'));
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
 
-app.use(verifyJWT);
-// app.use('/users', require('./routes/api/users'));
+// app.use(verifyJWT);
+app.use('/users', require('./routes/api/users'));
+app.use('/products', upload.any(), require('./routes/api/products'));
 
 app.all('*', (req, res) => {
     res.status(404);
