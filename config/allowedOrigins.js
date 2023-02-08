@@ -4,6 +4,7 @@ const allowedOrigins = [
     'http://localhost:3000',
     'https://novaryacreations.ca',
     'https://www.novaryacreations.ca',
+    '*'
 ];
 
 module.exports = allowedOrigins;
