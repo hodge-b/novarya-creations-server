@@ -39,7 +39,7 @@ app.use(cookieParser());
 // middleware for uploading files
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, '../../var/data/images')
+        callback(null, '/var/data/images')
     },
     filename: (req, file, callback) => {
         console.log(file);
